@@ -10,14 +10,15 @@ export default function Home() {
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1); // Track current page
   const [totalPosts, setTotalPosts] = useState(0); // Track total posts for pagination
-  const limit = 5; // Number of posts per page
+  const [search, setSearch] = useState("");
+  const limit = 2; // Number of posts per page
   const router = useRouter();
   const { user } = useAuthStore();
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await getPosts("", (page - 1) * limit, limit);
+        const response = await getPosts(search, (page - 1) * limit, limit);
         setPosts(response.data.posts);
         setTotalPosts(response.data.total);
       } catch (error) {
@@ -25,7 +26,7 @@ export default function Home() {
       }
     };
     fetchPosts();
-  }, [page]); // Fetch posts when page changes
+  }, [search, page]);
 
 
   return (
@@ -41,6 +42,14 @@ export default function Home() {
             Create Post
           </button>
         )}
+
+        <input
+          type="text"
+          placeholder="Search posts..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="border p-2 rounded w-full mb-4"
+        />
 
         <div className="space-y-4">
           {posts.length > 0 ? (
