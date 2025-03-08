@@ -60,27 +60,31 @@ export default function Home() {
         </div>
 
         {/* Pagination Controls */}
-        <div className="flex justify-center items-center gap-4 mt-6">
-          <button
-            onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-            disabled={page === 1}
-            className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
-          >
-            Previous
-          </button>
+        {
+          totalPosts > 0 && (
+          <div className="flex justify-center items-center gap-4 mt-6">
+            <button
+              onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+              disabled={page === 1}
+              className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
+            >
+              Previous
+            </button>
 
-          <span className="text-lg">
-            Page {page} of {Math.ceil(totalPosts / limit)}
-          </span>
+            <span className="text-lg">
+              Page {page} of {Math.ceil(totalPosts / limit)}
+            </span>
 
-          <button
-            onClick={() => setPage((prev) => prev + 1)}
-            disabled={page * limit >= totalPosts}
-            className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
-          >
-            Next
-          </button>
-        </div>
+            <button
+              onClick={() => setPage((prev) => prev + 1)}
+              disabled={page * limit >= totalPosts}
+              className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
+            >
+              Next
+            </button>
+          </div>
+          )
+        }
       </div>
     </div>
   );
