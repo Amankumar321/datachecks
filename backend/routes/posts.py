@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, UploadFile, File, Form, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy import or_
 import models, schemas, database, auth
-from typing import Optional, List
+from typing import Optional
 import os
 import shutil
 
@@ -44,7 +44,7 @@ def create_post(
     return new_post
 
 
-@router.get("/posts", response_model=List[schemas.PostResponse])
+@router.get("/posts", response_model=schemas.PaginatedPostResponse)
 def list_posts(
     db: Session = db_dependency, 
     search: Optional[str] = None, 
@@ -52,6 +52,7 @@ def list_posts(
     limit: int = 10
 ):
     query = db.query(models.Post)
+    
     if search:
         query = query.filter(
             or_(
@@ -59,8 +60,11 @@ def list_posts(
                 models.Post.content.ilike(f"%{search}%")
             )
         )
+    
+    total = query.count()
     posts = query.order_by(models.Post.updated_at.desc()).offset(skip).limit(limit).all()
-    return posts
+
+    return {"posts": posts, "total": total} 
 
 
 @router.get("/posts/{post_id}", response_model=schemas.PostResponse)

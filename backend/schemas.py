@@ -36,3 +36,8 @@ class PostResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class PaginatedPostResponse(BaseModel):
+    posts: List[PostResponse]
+    total: int
