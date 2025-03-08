@@ -11,7 +11,7 @@ export default function Home() {
   const [page, setPage] = useState(1); // Track current page
   const [totalPosts, setTotalPosts] = useState(0); // Track total posts for pagination
   const [search, setSearch] = useState("");
-  const limit = 2; // Number of posts per page
+  const limit = 5; // Number of posts per page
   const router = useRouter();
   const { user } = useAuthStore();
 
